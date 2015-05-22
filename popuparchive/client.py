@@ -8,6 +8,7 @@ import logging
 from base64 import b64encode
 import pprint
 import os
+import json
 
 class Client(object):
 
@@ -61,13 +62,29 @@ class Client(object):
         resp = requests.get(self.host+'/api'+path, params=params, headers=headers)
         return resp.json()
 
+    def post(self, path, payload):
+        headers = {'Authorization': "Bearer " + self.access_token}
+        #pprint.pprint(payload)
+        resp = requests.post(self.host+'/api'+path, json=payload, headers=headers)
+        return resp.json()
+
     def search(self, params):
         #pprint.pprint(params)
         return self.get('/search/', params)
+
+    def get_collections(self):
+        return self.get('/collections')['collections']
 
     def get_collection(self, coll_id):
         return self.get('/collections/'+str(coll_id))
 
     def get_item(self, coll_id, item_id):
         return self.get('/collections/'+str(coll_id)+'/items/'+str(item_id))
+
+    def create_item(self, coll_id, payload):
+        return self.post('/collections/'+str(coll_id)+'/items', payload)
+
+    def create_audio_file(self, item_id, payload):
+        return self.post('/items/'+str(item_id)+'/audio_files', { 'audio_file': payload } )
+
 

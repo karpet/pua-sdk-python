@@ -34,7 +34,7 @@ class TestSynopsis(TestCase):
             self.assertTrue(hit['title'])
 
     def test_items(self):
-        collections = self.client.get('/collections')['collections']
+        collections = self.client.get_collections()
         for coll in collections:
             item_id = coll['item_ids'][0]
             item_i  = self.client.get_item(coll['id'], item_id)
@@ -44,11 +44,32 @@ class TestSynopsis(TestCase):
             self.assertEqual(item_i['title'], item['title'])
 
     def test_collections(self):
-        colls = self.client.get('/collections')['collections']
+        colls = self.client.get_collections()
         for  coll in colls:
             #pprint.pprint(coll)
             coll_i = self.client.get_collection(coll['id'])
             self.assertEqual(coll_i['title'], coll['title'])
+
+    def test_audio_files(self):
+        colls = self.client.get_collections()
+        coll = colls[0]
+        item = self.client.create_item(coll['id'], { 
+            'title': 'this is an item with remote audio files',
+            'extra': {
+                'callback': 'https://nosuchdomain.foo/callback/path'
+            }
+        })
+        self.assertEqual(item['collection_id'], coll['id'])
+        self.assertEqual(item['extra']['callback'], 'https://nosuchdomain.foo/callback/path')
+        #pprint.pprint(item)
+
+        remote_audio = 'https://speechmatics.com/api-samples/zero'
+        audio_file = self.client.create_audio_file(item['id'], { 'remote_file_url': remote_audio })
+        #pprint.pprint(audio_file)
+        pua_item = self.client.get_item(coll['id'], item['id'])
+        #pprint.pprint(pua_item)
+        self.assertEqual(pua_item['audio_files'][0]['original'], remote_audio)
+        
  
 
 if __name__ == '__main__':
