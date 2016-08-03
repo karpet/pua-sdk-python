@@ -9,6 +9,7 @@ setup(
     author_email='edison@popuparchive.com',
     url='https://github.com/popuparchive/pua-sdk-python',
     download_url=' https://github.com/popuparchive/pua-sdk-python/tarball/1.0.0',
+    license='Apache License 2.0',
     keywords=[
         'transcription',
         'audio',
@@ -16,7 +17,18 @@ setup(
         'mp3',
         'radio',
         'podcasts'],
-    classifiers=[],
+    classifiers=[
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+    ],
+    install_requires=[
+        'requests',
+    ],
     setup_requires=[
         'pytest-runner',
     ],
