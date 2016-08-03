@@ -1,15 +1,14 @@
 import os
 import sys
-
 import unittest
 from unittest import TestCase
 
 import dotenv
-sys.path.append("../popuparchive")
-sys.path.append(".")
 
 from popuparchive.client import Client
 
+sys.path.append("../popuparchive")
+sys.path.append(".")
 dotenv.load_dotenv('.env')
 
 

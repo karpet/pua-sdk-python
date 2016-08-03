@@ -2,11 +2,11 @@
 Pop Up Archive API Client
 Copyright 2015 Pop Up Archive
 """
+import logging
+import os
+from base64 import b64encode
 
 import requests
-import logging
-from base64 import b64encode
-import os
 
 
 class Client(object):
