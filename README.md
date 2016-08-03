@@ -59,10 +59,11 @@ AS_ID=somestring
 AS_SECRET=sekritstring
 AS_HOST=http://popuparchive.dev
 ```
-
+Make sure you have [tox](https://tox.readthedocs.io/en/latest/) installed.
+If you wish to test all supported Python versions, use [pyenv](https://github.com/yyuu/pyenv) to install them.
 
 Then run the tests:
 
 ```bash
-make test
+tox
 ```
