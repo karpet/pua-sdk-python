@@ -13,23 +13,24 @@ Example:
 from popuparchive import Client
 
 # create a client
-client = Client( oauth_id, oauth_secret )
+client = Client(oauth_id, oauth_secret)
 
 # get all your collections
 collections = client.get_collections()
 
 # create an item in collection 1234
-item = client.create_item(1234, { 
+item = client.create_item(1234, {
     'title': 'this is an item with remote audio files',
     'extra': {
-        'callback': 'https://nosuchdomain.foo/callback/path'
-    }   
+        'callback': 'https://nosuchdomain.foo/callback/path',
+    }
 })
 
 # create an audio file for the new item
-audio_file = client.create_audio_file(item['id'], { 
-    'remote_file_url': 'http://example.com/foo.mp3' 
-})
+audio_file = client.create_audio_file(
+    item['id'],
+    'http://example.com/foo.mp3'
+)
 
 # fetch a collection with id 1234
 coll = client.get('/collections/1234')
@@ -58,6 +59,7 @@ AS_ID=somestring
 AS_SECRET=sekritstring
 AS_HOST=http://popuparchive.dev
 ```
+
 
 Then run the tests:
 
