@@ -2,13 +2,12 @@
 Pop Up Archive API Client
 Copyright 2015 Pop Up Archive
 """
+import logging
+import os
+from base64 import b64encode
 
 import requests
-import logging
-from base64 import b64encode
-import pprint
-import os
-import json
+
 
 class Client(object):
 
@@ -19,7 +18,7 @@ class Client(object):
             raise "OAuth key required"
         if not oauth_secret:
             raise "OAuth secret required"
-        
+
         self.key = oauth_key
         self.secret = oauth_secret
         self.host = oauth_host
@@ -37,21 +36,20 @@ class Client(object):
             http_client.HTTPConnection.debuglevel = 1
 
             # You must initialize logging, otherwise you'll not see debug output.
-            logging.basicConfig() 
+            logging.basicConfig()
             logging.getLogger().setLevel(logging.DEBUG)
             requests_log = logging.getLogger("requests.packages.urllib3")
             requests_log.setLevel(logging.DEBUG)
             requests_log.propagate = True
 
         # get oauth token
-        params = {'grant_type':'client_credentials'}
+        params = {'grant_type': 'client_credentials'}
         unencoded_sig = "{}:{}".format(self.key, self.secret)
-        signature = b64encode(unencoded_sig)
-        headers = {'Authorization': "Basic {}".format(signature),
+        signature = b64encode(unencoded_sig.encode())
+        headers = {'Authorization': "Basic {}".format(signature.decode()),
                    'Content-Type': 'application/x-www-form-urlencoded'}
         response = requests.post(self.host+'/oauth/token', params=params, headers=headers)
         result = response.json()
-        #pprint.pprint(result)
         self.access_token = result.get('access_token', None)
 
     def __str__(self):
@@ -64,12 +62,10 @@ class Client(object):
 
     def post(self, path, payload):
         headers = {'Authorization': "Bearer " + self.access_token}
-        #pprint.pprint(payload)
         resp = requests.post(self.host+'/api'+path, json=payload, headers=headers)
         return resp.json()
 
     def search(self, params):
-        #pprint.pprint(params)
         return self.get('/search/', params)
 
     def get_collections(self):
@@ -85,6 +81,4 @@ class Client(object):
         return self.post('/collections/'+str(coll_id)+'/items', payload)
 
     def create_audio_file(self, item_id, payload):
-        return self.post('/items/'+str(item_id)+'/audio_files', { 'audio_file': payload } )
-
-
+        return self.post('/items/'+str(item_id)+'/audio_files', {'audio_file': {'remote_file_url': payload}})
