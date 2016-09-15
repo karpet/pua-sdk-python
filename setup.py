@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name="popuparchive",
     packages=["popuparchive"],
-    version="1.0.0",
+    version="1.1.0",
     description='Python client for interacting with the Pop Up Archive API.',
     author='Pop Up Archive',
     author_email='edison@popuparchive.com',
