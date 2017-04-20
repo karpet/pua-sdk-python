@@ -3,7 +3,7 @@ Pop Up Archive API Python Client
 
 Python client SDK for https://www.popuparchive.com/
 
-See docs at https://developer.popuparchive.com/
+See docs at https://www.developer.popuparchive.com/
 
 OAuth credentials are available from https://www.popuparchive.com/oauth/applications
 
